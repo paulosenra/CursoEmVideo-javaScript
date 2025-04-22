@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dia da Semana</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --domingo: #FF7675;
+            --segunda: #74B9FF;
+            --terca: #55E6C1;
+            --quarta: #FDA7DF;
+            --quinta: #FF9F43;
+            --sexta: #FDCB6E;
+            --sabado: #00B894;
+            --erro: #D63031;
+            --texto: #2D3436;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            padding: 30px;
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+        
+        h1 {
+            color: var(--texto);
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        
+        .resultado {
+            padding: 30px;
+            border-radius: 10px;
+            margin: 20px 0;
+            color: white;
+            font-size: 28px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .emoji {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+        
+        .data-info {
+            color: #636e72;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        
+        .switch-code {
+            background-color: #f1f1f1;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 30px;
+            text-align: left;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: #2D3436;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Qual é o dia da semana hoje?</h1>
+        
+        <div class="emoji" id="emoji">📅</div>
+        <div class="resultado" id="resultado">Carregando...</div>
+        
+        <div class="data-info" id="dataInfo"></div>
+        
+       
+    </div>
+
+    <script>
+        // Função principal que usa switch exatamente como no exercício
+        function verificarDia() {
+            var agora = new Date();
+            var diaSem = agora.getDay();
+            var resultado = document.getElementById('resultado');
+            var emoji = document.getElementById('emoji');
+            var dataInfo = document.getElementById('dataInfo');
+            
+            // Formata a data completa
+            var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            dataInfo.textContent = agora.toLocaleDateString('pt-BR', options);
+            
+            // Usando switch exatamente como no código original
+            switch(diaSem) {
+                case 0:
+                    resultado.textContent = 'Domingo';
+                    resultado.style.backgroundColor = 'var(--domingo)';
+                    emoji.textContent = '🌞';
+                    break;
+                case 1:
+                    resultado.textContent = 'Segunda-feira';
+                    resultado.style.backgroundColor = 'var(--segunda)';
+                    emoji.textContent = '😴';
+                    break;
+                case 2:
+                    resultado.textContent = 'Terça-feira';
+                    resultado.style.backgroundColor = 'var(--terca)';
+                    emoji.textContent = '😊';
+                    break;
+                case 3:
+                    resultado.textContent = 'Quarta-feira';
+                    resultado.style.backgroundColor = 'var(--quarta)';
+                    emoji.textContent = '😄';
+                    break;
+                case 4:
+                    resultado.textContent = 'Quinta-feira';
+                    resultado.style.backgroundColor = 'var(--quinta)';
+                    emoji.textContent = '🤩';
+                    break;
+                case 5:
+                    resultado.textContent = 'Sexta-feira';
+                    resultado.style.backgroundColor = 'var(--sexta)';
+                    emoji.textContent = '🎉';
+                    break;
+                case 6:
+                    resultado.textContent = 'Sábado';
+                    resultado.style.backgroundColor = 'var(--sabado)';
+                    emoji.textContent = '😎';
+                    break;
+                default:
+                    resultado.textContent = '[ERRO] Dia Inválido';
+                    resultado.style.backgroundColor = 'var(--erro)';
+                    emoji.textContent = '❌';
+                    break;
+            }
+            
+            // Mantendo os logs originais no console
+            console.log(diaSem);
+            switch(diaSem) {
+                case 0:
+                    console.log('Domingo');
+                    break;
+                case 1:
+                    console.log('Segunda-feira');
+                    break;
+                case 2:
+                    console.log('Terça-feira');
+                    break;
+                case 3:
+                    console.log('Quarta-feira');
+                    break;
+                case 4:
+                    console.log('Quinta-feira');
+                    break;
+                case 5:
+                    console.log('Sexta-feira');
+                    break;
+                case 6:
+                    console.log('Sábado');
+                    break;
+                default:
+                    console.log('[ERROR] Dia Inválido');
+                    break;
+            }
+        }
+        
+        // Executa ao carregar a página
+        verificarDia();
+    </script>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificador de Elegibilidade para Voto</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        h1 {
+            color: var(--primary);
+            margin-bottom: 30px;
+            font-size: 28px;
+            position: relative;
+        }
+        
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: var(--secondary);
+            border-radius: 3px;
+        }
+        
+        .icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+        
+        .input-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--dark);
+            font-weight: 600;
+        }
+        
+        input[type="number"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        input[type="number"]:focus {
+            border-color: var(--secondary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+        
+        button {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .result.show {
+            display: block;
+        }
+        
+        .nao-vota {
+            background-color: #ffecec;
+            color: var(--danger);
+        }
+        
+        .opcional {
+            background-color: #fff8e6;
+            color: var(--warning);
+        }
+        
+        .obrigatorio {
+            background-color: #e8f7ee;
+            color: var(--success);
+        }
+        
+        .result-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+        
+        .result-text {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .age-info {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #7f8c8d;
+            text-align: left;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">🗳️</div>
+        <h1>Verificador de Elegibilidade para Voto</h1>
+        
+        <div class="input-group">
+            <label for="idade">Digite sua idade:</label>
+            <input type="number" id="idade" placeholder="Ex: 18" min="0" max="120">
+        </div>
+        
+        <button onclick="verificarElegibilidade()">Verificar Elegibilidade</button>
+        
+        <div id="result" class="result">
+            <div id="result-icon" class="result-icon"></div>
+            <p id="result-text" class="result-text"></p>
+        </div>
+        
+        <div class="age-info">
+            <p><strong>Legislação brasileira sobre voto:</strong></p>
+            <ul style="margin-top: 10px; margin-left: 20px;">
+                <li>Menos de 16 anos: <strong>Não vota</strong></li>
+                <li>16 ou 17 anos: <strong>Voto opcional</strong></li>
+                <li>18 a 70 anos: <strong>Voto obrigatório</strong></li>
+                <li>Acima de 70 anos: <strong>Voto opcional</strong></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function verificarElegibilidade() {
+            const idadeInput = document.getElementById('idade');
+            const idade = parseInt(idadeInput.value);
+            const result = document.getElementById('result');
+            const resultIcon = document.getElementById('result-icon');
+            const resultText = document.getElementById('result-text');
+            
+            
+            
+            // Limpa classes anteriores
+            result.className = 'result';
+            
+            // Lógica de verificação (adaptada do código original)
+            if (idade < 16) {
+                console.log('Não vota');
+                resultIcon.innerHTML = '🚫';
+                resultText.innerHTML = 'Você <strong>não pode votar</strong>';
+                result.classList.add('nao-vota', 'show');
+            } else if (idade >= 16 && idade < 18) {
+                console.log('Voto opcional');
+                resultIcon.innerHTML = '❔';
+                resultText.innerHTML = 'Seu voto é <strong>opcional</strong>';
+                result.classList.add('opcional', 'show');
+            } else if (idade >= 18 && idade < 70) {
+                console.log('Voto obrigatório');
+                resultIcon.innerHTML = '✅';
+                resultText.innerHTML = 'Seu voto é <strong>obrigatório</strong>';
+                result.classList.add('obrigatorio', 'show');
+            } else if (idade >= 70) {
+                console.log('Voto opcional para maiores de 70 anos');
+                resultIcon.innerHTML = '👴👵';
+                resultText.innerHTML = 'Seu voto é <strong>opcional</strong> (acima de 70 anos)';
+                result.classList.add('opcional', 'show');
+            }
+        }
+    </script>
+</body>
+</html>

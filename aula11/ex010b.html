@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Identificador de Nacionalidade</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --accent-color: #e74c3c;
+            --dark-color: #2c3e50;
+            --light-color: #ecf0f1;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        h1 {
+            color: var(--dark-color);
+            margin-bottom: 30px;
+            font-size: 2rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: var(--primary-color);
+            border-radius: 3px;
+        }
+        
+        .world-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+        
+        .input-container {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--dark-color);
+            font-weight: 600;
+        }
+        
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 1em;
+        }
+        
+        select:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+        
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 10px;
+            width: 100%;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: var(--light-color);
+            text-align: center;
+            display: none;
+        }
+        
+        .result.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .result-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .brasil {
+            color: var(--secondary-color);
+        }
+        
+        .estrangeiro {
+            color: var(--accent-color);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .flags {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .flag {
+            width: 40px;
+            height: 30px;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .flag:hover {
+            transform: scale(1.1);
+        }
+        
+        .brazil-flag {
+            background: linear-gradient(to bottom, #009c3b 33%, #ffdf00 33% 66%, #002776 66%);
+        }
+        
+        .usa-flag {
+            background: linear-gradient(to bottom, 
+                #b22234 0% 7.7%,
+                white 7.7% 15.4%,
+                #b22234 15.4% 23.1%,
+                white 23.1% 30.8%,
+                #b22234 30.8% 38.5%,
+                white 38.5% 46.2%,
+                #b22234 46.2% 54%,
+                white 54% 61.5%,
+                #b22234 61.5% 69.2%,
+                white 69.2% 76.9%,
+                #b22234 76.9% 84.6%,
+                white 84.6% 92.3%,
+                #b22234 92.3% 100%);
+            position: relative;
+        }
+        
+        .usa-flag::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 40%;
+            height: 54%;
+            background-color: #3c3b6e;
+        }
+        
+        .usa-flag::after {
+            content: '★';
+            position: absolute;
+            color: white;
+            font-size: 6px;
+            top: 2px;
+            left: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="world-icon">🌍</div>
+        <h1>Identificador de Nacionalidade</h1>
+        
+        <div class="input-container">
+            <label for="country">Selecione seu país:</label>
+            <select id="country">
+                <option value="">-- Selecione --</option>
+                <option value="Brasil">Brasil</option>
+                <option value="Argentina">Argentina</option>
+                <option value="Estados Unidos">Estados Unidos</option>
+                <option value="Portugal">Portugal</option>
+                <option value="Outro">Outro país</option>
+            </select>
+        </div>
+        
+        <button onclick="verificarNacionalidade()">Verificar</button>
+        
+        <div class="flags">
+            <div class="flag brazil-flag" onclick="selecionarPais('Brasil')"></div>
+            <div class="flag usa-flag" onclick="selecionarPais('Estados Unidos')"></div>
+        </div>
+        
+        <div id="result" class="result">
+            <div id="result-icon" class="result-icon"></div>
+            <p id="result-text"></p>
+        </div>
+    </div>
+
+    <script>
+        function verificarNacionalidade() {
+            const país = document.getElementById('country').value;
+            const result = document.getElementById('result');
+            const resultIcon = document.getElementById('result-icon');
+            const resultText = document.getElementById('result-text');
+            
+            if (!país) {
+                alert('Por favor, selecione um país');
+                return;
+            }
+            
+            console.log(`Vivendo em ${país}`);
+            
+            if (país == 'Brasil') {
+                console.log('Você é Brasileiro');
+                resultIcon.innerHTML = '🇧🇷';
+                resultIcon.className = 'result-icon brasil';
+                resultText.innerHTML = `Você selecionou <strong>${país}</strong><br>Você é <strong>Brasileiro</strong>!`;
+            } else {
+                console.log('Você é Estrangeiro');
+                resultIcon.innerHTML = '🌎';
+                resultIcon.className = 'result-icon estrangeiro';
+                resultText.innerHTML = `Você selecionou <strong>${país}</strong><br>Você é <strong>Estrangeiro</strong>!`;
+            }
+            
+            result.classList.add('show');
+        }
+        
+        function selecionarPais(pais) {
+            document.getElementById('country').value = pais;
+        }
+    </script>
+</body>
+</html>

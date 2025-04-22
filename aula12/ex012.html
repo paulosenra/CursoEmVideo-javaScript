@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relógio e Saudação</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --manha: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            --tarde: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            --noite: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
+            --texto-manha: #d35400;
+            --texto-tarde: #e67e22;
+            --texto-noite: #2c3e50;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            transition: all 0.5s ease;
+        }
+        
+        .manha {
+            background: var(--manha);
+            color: var(--texto-manha);
+        }
+        
+        .tarde {
+            background: var(--tarde);
+            color: var(--texto-tarde);
+        }
+        
+        .noite {
+            background: var(--noite);
+            color: var(--texto-noite);
+        }
+        
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            transition: all 0.5s ease;
+        }
+        
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            font-weight: 700;
+        }
+        
+        .relogio {
+            font-size: 5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .saudacao {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+        
+        .emoji {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+        
+        .info {
+            margin-top: 30px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        @media (max-width: 480px) {
+            .relogio {
+                font-size: 3.5rem;
+            }
+            
+            .saudacao {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body class="manha">
+    <div class="container">
+        <div class="emoji">⏰</div>
+        <h1>Relógio Digital</h1>
+        
+        <div class="relogio" id="relogio">00:00:00</div>
+        <div class="saudacao" id="saudacao">Bom Dia!</div>
+        
+        <div class="info">
+            <p id="dataCompleta"></p>
+            <p>Saudação muda automaticamente conforme o horário</p>
+        </div>
+    </div>
+
+    <script>
+        function atualizarRelogio() {
+            var agora = new Date();
+            var hora = agora.getHours();
+            var minutos = agora.getMinutes();
+            var segundos = agora.getSeconds();
+            
+            // Formatação para 2 dígitos
+            hora = hora < 10 ? '0' + hora : hora;
+            minutos = minutos < 10 ? '0' + minutos : minutos;
+            segundos = segundos < 10 ? '0' + segundos : segundos;
+            
+            // Atualiza o relógio
+            document.getElementById('relogio').textContent = `${hora}:${minutos}:${segundos}`;
+            
+            // Determina a saudação e o tema
+            var saudacao = '';
+            var tema = '';
+            var emoji = '';
+            
+            if (hora < 12) {
+                saudacao = 'Bom Dia!';
+                tema = 'manha';
+                emoji = '🌅';
+            } else if (hora < 18) {
+                saudacao = 'Boa Tarde!';
+                tema = 'tarde';
+                emoji = '☀️';
+            } else {
+                saudacao = 'Boa Noite!';
+                tema = 'noite';
+                emoji = '🌙';
+            }
+            
+            // Atualiza a saudação e o tema
+            document.getElementById('saudacao').textContent = saudacao;
+            document.getElementById('saudacao').innerHTML = `${emoji} ${saudacao} ${emoji}`;
+            document.body.className = tema;
+            document.querySelector('.emoji').textContent = emoji;
+            
+            // Atualiza a data completa
+            var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('dataCompleta').textContent = agora.toLocaleDateString('pt-BR', options);
+            
+            console.log(`Agora são exatamente ${hora} horas.`);
+            console.log(saudacao);
+        }
+        
+        // Atualiza imediatamente e depois a cada segundo
+        atualizarRelogio();
+        setInterval(atualizarRelogio, 1000);
+    </script>
+</body>
+</html>
